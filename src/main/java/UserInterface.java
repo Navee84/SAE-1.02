@@ -56,8 +56,11 @@ public class UserInterface {
 				System.out.println("CHARGER UN FICHIER\n________________________");
 				System.out.println("Entrez le chemin RELATIF du fichier à charger :");
 				System.out.println("");
-				System.out.println("0 - Menu principal");
+                System.out.print("Chemin : ");
                 break;
+
+            default:
+                System.out.println("Erreur lors de l'affichage de '"+menu+"'");
 
 		}
 	}
@@ -73,11 +76,11 @@ public class UserInterface {
     }
 	
 	public static void clearScreen() {
-		int i;
-		
-		for(i=0; i<50; i++) {
-			System.out.println("");
-		}
-	}
+        int i;
+
+        for (i = 0; i < 50; i++) {
+            System.out.println("");
+        }
+    }
 
 }

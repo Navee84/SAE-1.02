@@ -3,15 +3,22 @@ import java.io.*;
 public class main {
 
 	public static void main(String[] args) throws IOException {
+
+//        FileWriter myWriter = new FileWriter("pathtest.txt");
+//        myWriter.write("Les fichiers java sont trouvés ici par défaut !");
+//        myWriter.close();
+
+        boolean isImplementationLinkedlist = false; // CHANGER CE PARAMÈTRE POUR CHANGER L'IMPLÉMENTATION UTLISÉE
+
         int input;
         boolean mainLoop = true;
         boolean triLoop;
         int attributeCriteria = 1; // Valeur par défaut du critère d'attribut
 
+
 		//BufferedReader dataFile = fileLoader.loadFile();
 		//while(dataFile.ready()) {
 			//Musique testmusique = new Musique((String) dataFile.readLine());
-        // UserInterface.afficher("tri");
         System.out.println("TEST");
 
 
@@ -72,7 +79,13 @@ public class main {
 
                 // CHARGEMENT DU FICHIER
                 case 5:
-
+                    String path;
+                    UserInterface.clearScreen();
+                    UserInterface.afficher("chargement");
+                    path = UserInput.StringInput();
+                    while(!contructData(path)) {
+                        path = UserInput.StringInput();
+                    }
                     break;
 
                 // fin du programme
@@ -85,5 +98,23 @@ public class main {
         }
 
 	}
+    public static boolean contructData(String path) throws IOException {
+//        try {
+            BufferedReader dataFile = fileLoader.loadFile(path);
+            dataFile.readLine(); //passer la première ligne du fichier
+            while(dataFile.ready()) {
+                Musique testmusique = new Musique((String) dataFile.readLine());
+            }
+
+//        } catch (FileNotFoundException fileError) {
+//            System.out.println("Le chemin spécifié n'est pas valide, veuillez en saisir un nouveau :");
+//            return false;
+//        } catch (Exception e) {
+//            System.out.println("Erreur -->"+ e);
+//        }
+
+        return true;
+
+    }
 
 }

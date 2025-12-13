@@ -18,63 +18,53 @@ public class Musique {
 	private int albumPopularity; //idx 10
 	//private String albumId;
 	//private String artistId;
-	private String[] astistsList = new String[12]; //idx 13 - 25
+	private String[] astistsList = new String[12]; //idx 12 - 24
 	
 	
 	public Musique(String data) {
-		//The first line should always be the parameters
-		int n, i;
+        // constructeur
+		int i;
 		String currentToken;
-		 
+
 		System.out.println(data);
-		StringTokenizer tok = new StringTokenizer(data,",");
-		
-		n = tok.countTokens();
-		for(i=1 ; i<n; i++) {
-			// i=1 -> passer la premi�re ligne du fichier csv
-			currentToken = tok.nextToken();
+        String[] values = data.split(",");
 
-			System.out.println(currentToken);
-			switch (i) {
-		        case 0: trackName = currentToken;
-		        	break;
-		        	
-		        case 1: trackId = currentToken;
-		        	break;
-		        	
-		        case 3: duration = Integer.parseInt(currentToken); //oblig� de parse pour changer le type de currentToken pour faire correspondre au type de l'attribut
-		        	break;
-		        	
-		        case 4:
-		        	switch(currentToken) {
-		        		case "single" : albumType = -1;
-        					break;
-		        		case "compilation" : albumType = 0;
-	        				break;
-		        		case "album" : albumType = 1;
-		        			break;
-		        	}
-		        	break;
-		        	
-		        case 7: albumName = currentToken;
-		        	break;
-		        	
-		        case 8: releaseDate = LocalDateTime.parse(currentToken, f).toLocalDate();
-		        	break;
-		        	
-		        case 10: albumPopularity = Integer.parseInt(currentToken);
-		        	break;
+        // Assignation des valeurs
+        System.out.println("Trackname : "+values[0]);
+        trackName = values[0];
+        trackId = values[1];
+        //System.out.println("indice 5 :"+values[5]);
+        duration = Integer.parseInt(values[3]);
 
-		        // artistes
-		        default:
-		            if (i >= 13 && i < 25)
-		                astistsList[i - 13] = currentToken;
-		    }
+        switch(values[4]) {
+            case "single":
+                albumType = -1;
+                break;
+            case "compilation":
+                albumType = 0;
+                break;
+            case "album":
+                albumType = 1;
+                break;
+        }
+        albumName = values[7];
+        releaseDate = LocalDateTime.parse(values[8], f).toLocalDate();
+        albumPopularity = Integer.parseInt(values[10]);
+        System.out.println(values[12]);
+
+
+        for (i=13; i<24; i++){
+            System.out.println("Artiste N°"+(i-13)+" : "+values[i]);
+            astistsList[i - 13] = values[i];
+
+        }
+
+
+		for(i=0 ; i<values.length; i++) {
+			currentToken = values[i];
 			
 		}
 		System.out.println("TOKEN");
-		
-
 	}
 }
 
