@@ -15,10 +15,6 @@ public class main {
         boolean triLoop;
         int attributeCriteria = 1; // Valeur par défaut du critère d'attribut
 
-
-		//BufferedReader dataFile = fileLoader.loadFile();
-		//while(dataFile.ready()) {
-			//Musique testmusique = new Musique((String) dataFile.readLine());
         System.out.println("TEST");
 
 
@@ -104,6 +100,7 @@ public class main {
             dataFile.readLine(); //passer la première ligne du fichier
             while(dataFile.ready()) {
                 Musique testmusique = new Musique((String) dataFile.readLine());
+                testmusique.afficher();
             }
 
         } catch (FileNotFoundException fileError) {

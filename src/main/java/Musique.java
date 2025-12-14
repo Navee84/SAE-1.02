@@ -1,24 +1,17 @@
 import java.time.*;
 import java.time.format.*;
-import java.util.*;
 
 public class Musique {
 	private DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss 'UTC'");
 	
 	private String trackName; //idx 0
 	private String trackId; //idx 1
-	//private int trackNumber;
 	private int duration; //milisecondes //idx 3
 	private int albumType; //-1 = single, 0 = compilation, 1 = album //idx 4 
-	//private String artists;
-	//private int totalTracks;
 	private String albumName; //idx 7
 	private LocalDate releaseDate; //idx 8
-	//private String label;
 	private int albumPopularity; //idx 10
-	//private String albumId;
-	//private String artistId;
-	private String[] astistsList = new String[12]; //idx 12 - 24
+	private String[] artistsList = new String[12]; //idx 12 - 24
 	
 	
 	public Musique(String data) {
@@ -55,7 +48,7 @@ public class Musique {
 
         for (i=13; i<24; i++){
 //            System.out.println("Artiste N°"+(i-13)+" : "+values[i]);
-            astistsList[i - 13] = values[i];
+            artistsList[i - 13] = values[i];
 
         }
 
@@ -66,6 +59,39 @@ public class Musique {
 		}
 //		System.out.println("TOKEN");
 	}
+
+    public void afficher() {
+
+        System.out.print(trackName);
+        System.out.print("   ");
+
+        System.out.print(duration);
+        System.out.print("   ");
+
+        System.out.print(releaseDate);
+        System.out.print("   ");
+
+        System.out.print(albumName);
+        System.out.print("   ");
+
+        if(albumType == 0){
+            System.out.print("Compilation");
+        } else if (albumType < 0) {
+            System.out.print("Single");
+        } else {
+            System.out.print("Album");
+        }
+        System.out.print("   ");
+
+        System.out.print(albumPopularity);
+        System.out.print("   ");
+
+        for(int i = 0; i<12; i++){
+            System.out.print(artistsList[i]);
+            System.out.print("   ");
+        }
+
+    }
 }
 
 
