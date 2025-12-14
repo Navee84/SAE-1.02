@@ -18,15 +18,17 @@ public class UserInput {
     }
 
     public static String StringInput() {
+        String input = "";
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         try {
-            System.out.println("STRING INPUT ---> "+reader.readLine());
+            input = reader.readLine();
+            System.out.println("STRING INPUT ---> "+input);
 
         } catch (Exception e){
             System.out.println("ERROR STRING INPUT");
             System.out.println(e);
         }
-        return "";
+        return input;
     }
 
     public static int attributeCriteria(int currentAttribute, int input) {

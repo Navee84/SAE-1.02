@@ -99,19 +99,19 @@ public class main {
 
 	}
     public static boolean contructData(String path) throws IOException {
-//        try {
+        try {
             BufferedReader dataFile = fileLoader.loadFile(path);
             dataFile.readLine(); //passer la première ligne du fichier
             while(dataFile.ready()) {
                 Musique testmusique = new Musique((String) dataFile.readLine());
             }
 
-//        } catch (FileNotFoundException fileError) {
-//            System.out.println("Le chemin spécifié n'est pas valide, veuillez en saisir un nouveau :");
-//            return false;
-//        } catch (Exception e) {
-//            System.out.println("Erreur -->"+ e);
-//        }
+        } catch (FileNotFoundException fileError) {
+            System.out.println("Le chemin spécifié n'est pas valide, veuillez en saisir un nouveau :");
+            return false;
+        } catch (Exception e) {
+            System.out.println("Erreur -->"+ e);
+        }
 
         return true;
 

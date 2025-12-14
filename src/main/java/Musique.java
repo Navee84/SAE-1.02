@@ -26,11 +26,11 @@ public class Musique {
 		int i;
 		String currentToken;
 
-		System.out.println(data);
+//		System.out.println(data);
         String[] values = data.split(",");
 
         // Assignation des valeurs
-        System.out.println("Trackname : "+values[0]);
+//        System.out.println("Trackname : "+values[0]);
         trackName = values[0];
         trackId = values[1];
         //System.out.println("indice 5 :"+values[5]);
@@ -50,11 +50,11 @@ public class Musique {
         albumName = values[7];
         releaseDate = LocalDateTime.parse(values[8], f).toLocalDate();
         albumPopularity = Integer.parseInt(values[10]);
-        System.out.println(values[12]);
+//        System.out.println(values[12]);
 
 
         for (i=13; i<24; i++){
-            System.out.println("Artiste N°"+(i-13)+" : "+values[i]);
+//            System.out.println("Artiste N°"+(i-13)+" : "+values[i]);
             astistsList[i - 13] = values[i];
 
         }
@@ -64,7 +64,7 @@ public class Musique {
 			currentToken = values[i];
 			
 		}
-		System.out.println("TOKEN");
+//		System.out.println("TOKEN");
 	}
 }
 
