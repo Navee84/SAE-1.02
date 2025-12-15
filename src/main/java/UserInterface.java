@@ -28,6 +28,14 @@ public class UserInterface {
                 System.out.println("Entrez n'importe quelle touche pour revenir au menu principal.");
                 break;
 
+            case "triSubMenu":
+                System.out.println("TRI DES MUSIQUES - SOUS MENU\n________________________");
+                System.out.println("1 - Changer le critère de tri");
+                System.out.println("2 - Changer le type de tri");
+                System.out.println("");
+                System.out.println("0 - Menu principal");
+                break;
+
 				
 			case "tri":
 				System.out.println("TRI DES MUSIQUES\n________________________");
@@ -35,6 +43,14 @@ public class UserInterface {
                 displayAttributes();
 				System.out.println("");
 				System.out.println("0 - Menu principal");
+                break;
+
+            case "triType":
+                System.out.println("TYPE DE TRI\n________________________");
+                System.out.println("1 - Tri sélection");
+                System.out.println("2 - Tri fusion");
+                System.out.println("3 - Tri java");
+                System.out.println("");
                 break;
 
 			case "filtre":

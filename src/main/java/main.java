@@ -1,6 +1,18 @@
+import javax.swing.*;
 import java.io.*;
+import java.util.*;
 
 public class main {
+    private static boolean isImplementationLinkedlist = false; // CHANGER CE PARAMÈTRE POUR CHANGER L'IMPLÉMENTATION UTLISÉE
+    private static List<Musique> musicList;
+
+    static {
+        if (isImplementationLinkedlist) {
+            musicList = new LinkedList<>();
+        } else {
+            musicList = new ArrayList<>();
+        }
+    }
 
 	public static void main(String[] args) throws IOException {
 
@@ -8,12 +20,13 @@ public class main {
 //        myWriter.write("Les fichiers java sont trouvés ici par défaut !");
 //        myWriter.close();
 
-        boolean isImplementationLinkedlist = false; // CHANGER CE PARAMÈTRE POUR CHANGER L'IMPLÉMENTATION UTLISÉE
 
         int input;
         boolean mainLoop = true;
         boolean triLoop;
         int attributeCriteria = 1; // Valeur par défaut du critère d'attribut
+        int triType = 1; // Valeur par défaut du type de tri
+
 
         System.out.println("TEST");
 
@@ -30,26 +43,49 @@ public class main {
                 case 1:
                     UserInterface.clearScreen();
                     UserInterface.afficher("affichage");
+
+                    // Afficher tous les éléments présents dans la liste
+                    Iterator<Musique> iterator = musicList.iterator();
+                    while(iterator.hasNext()) {
+                        iterator.next().afficher();
+                        System.out.println("");
+                    }
+                    // attendre un input de l'utilisateur pour revenir au menu principal
                     input = UserInput.input();
                     break;
 
                 // BOUCLE DES TRIS
                 case 2:
-                    triLoop = true;
-                    attributeCriteria = 1; //valeur par défaut
-                    while (triLoop) {
-                        UserInterface.clearScreen();
-                        UserInterface.afficher("tri");
-                        System.out.println("Attribut de tri actif : "+attributeCriteria);
-                        input = UserInput.input();
+                    UserInterface.clearScreen();
+                    UserInterface.afficher("triSubMenu");
+                    input = UserInput.input();
+                    switch (input) {
+                        case 1:
+                            UserInterface.clearScreen();
+                            UserInterface.afficher("tri");
+                            System.out.println("Attribut de tri actif : " + attributeCriteria);
+                            input = UserInput.input();
 
-                        attributeCriteria = UserInput.attributeCriteria(attributeCriteria, input);
+                            attributeCriteria = UserInput.attributeCriteria(attributeCriteria, input);
+                            input = -1;
 
-                        // Retour au menu principal
-                        if(input == 0) {
-                            triLoop = false;
-                        }
+                            break;
+                        case 2:
+                            // Changer le type de tri
+                                UserInterface.clearScreen();
+                                UserInterface.afficher("triType");
+                                System.out.println("Type de tri actif : " + triType);
+                                input = UserInput.input();
+
+                                triType = UserInput.triType(triType, input);
+                                input = -1;
+                            break;
+
+                        default:
+                            System.out.println("Entrée invalide, veuillez réessayer.");
+                            break;
                     }
+
                     break;
                 // BOUCLE DE FILTRE
                 case 3:
@@ -99,8 +135,9 @@ public class main {
             BufferedReader dataFile = fileLoader.loadFile(path);
             dataFile.readLine(); //passer la première ligne du fichier
             while(dataFile.ready()) {
-                Musique testmusique = new Musique((String) dataFile.readLine());
-                testmusique.afficher();
+                Musique musicObject = new Musique((String) dataFile.readLine());
+                musicList.add(musicObject);
+
             }
 
         } catch (FileNotFoundException fileError) {
@@ -113,5 +150,26 @@ public class main {
         return true;
 
     }
+
+//    public void triSelection(Object criteria) {
+//        Iterator<Musique> it1 = musicList.listIterator();
+//
+//        while (it1.hasNext()) {
+//            int posMin = it1.hasNext().;
+//            String[] min = it1.next();
+//            ListIterator<String[]> it2 = table.listIterator(it1.nextIndex());
+//
+//            while (it2.hasNext()) {
+//                String[] courant = it2.next();
+//                int popCourant = Integer.parseInt(courant[col_popularite]);
+//                int popMin = Integer.parseInt(min[col_popularite]);
+//                if (popCourant < popMin) {
+//                    min = courant;
+//                    posMin = it2.previousIndex();}}
+//            int posActuelle = it1.previousIndex();
+//            if (posMin != posActuelle) {
+//                String[] tmp = table.get(posActuelle);
+//                table.set(posActuelle, min);
+//                table.set(posMin, tmp);}}}
 
 }

@@ -41,4 +41,14 @@ public class UserInput {
         }
 
     }
+
+    public static int triType(int currentTri, int input) {
+        if(input > 0 && input <= 3){
+            System.out.println("Type de tri sélectionné : "+input);
+            return input;
+        } else {
+            System.out.println("Type de tri non changé.");
+            return currentTri;
+        }
+    }
 }

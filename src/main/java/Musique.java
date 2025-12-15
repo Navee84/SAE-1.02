@@ -1,4 +1,5 @@
 import java.time.*;
+import java.time.chrono.MinguoDate;
 import java.time.format.*;
 
 public class Musique {
@@ -9,9 +10,9 @@ public class Musique {
 	private int duration; //milisecondes //idx 3
 	private int albumType; //-1 = single, 0 = compilation, 1 = album //idx 4 
 	private String albumName; //idx 7
-	private LocalDate releaseDate; //idx 8
+	private LocalDate releaseDate; //format : aaaa-mm-dd //idx 8
 	private int albumPopularity; //idx 10
-	private String[] artistsList = new String[12]; //idx 12 - 24
+	private String[] artistsList = new String[12]; //idx 12 -> 24
 	
 	
 	public Musique(String data) {
@@ -57,23 +58,24 @@ public class Musique {
 			currentToken = values[i];
 			
 		}
-//		System.out.println("TOKEN");
 	}
 
     public void afficher() {
+        // Affiche tous les attributs de l'objet musique
 
         System.out.print(trackName);
-        System.out.print("   ");
+        System.out.print("  |  ");
 
         System.out.print(duration);
-        System.out.print("   ");
+        System.out.print("  |  ");
 
         System.out.print(releaseDate);
-        System.out.print("   ");
+        System.out.print("  |  ");
 
         System.out.print(albumName);
-        System.out.print("   ");
+        System.out.print("  |  ");
 
+        // Formatage du type d'album (se référer à l'initialisation de la variable)
         if(albumType == 0){
             System.out.print("Compilation");
         } else if (albumType < 0) {
@@ -81,17 +83,46 @@ public class Musique {
         } else {
             System.out.print("Album");
         }
-        System.out.print("   ");
+        System.out.print("  |  ");
 
         System.out.print(albumPopularity);
-        System.out.print("   ");
+        System.out.print("  |  ");
 
         for(int i = 0; i<12; i++){
             System.out.print(artistsList[i]);
-            System.out.print("   ");
+            System.out.print("  |  ");
         }
 
     }
+    // Getter
+    public Object gettrackName() {
+        return trackName;
+    }
+    public Object gettrackId() {
+        return trackId;
+    }
+    public Object getduration() {
+        return duration;
+    }
+    public Object getalbumType() {
+        return albumType;
+    }
+    public Object getalbumName() {
+        return albumName;
+    }
+    public Object getreleaseDate() {
+        return releaseDate;
+    }
+    public Object getalbumPopularity() {
+        return albumPopularity;
+    }
+    public Object getartist(int artistIndex) {
+        try {
+            return artistsList[artistIndex];
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new ArrayIndexOutOfBoundsException("Index artiste invalide. Doit être entre 0 et 11.");
+        }
+    }
+
 }
-
-
