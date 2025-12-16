@@ -151,7 +151,7 @@ public class main {
                 case 4:
                     String title;
                     UserInterface.clearScreen();
-                    UserInterface.afficher("seachSubMenu");
+                    UserInterface.afficher("searchSubMenu");
                     System.out.println("type de recherche active : " + searchType);
                     searchType = UserInput.input();
 
@@ -165,7 +165,7 @@ public class main {
                             rechercheLineaire(title);
                             break;
                         case 2:
-                            // A implementer : recherche dicho (tkt je fais)
+                            rechercheDichotomique(title);
                             break;
 
                         default:
@@ -227,11 +227,13 @@ public class main {
 
     }
     public static void filtreManuel(String value) {
-        // TIMER - Pas finit tkt
+        // TIMER
         Iterator it = musicList.iterator();
         while (it.hasNext()) {
             Musique music = (Musique) it.next();
-            if(!music.getreleaseDate().contains(value)) {
+//            String date = music.getreleaseDate().toString();
+//            date = date.substring(0,4);
+            if(!music.getreleaseDate().toString().substring(0,4).contains(value)) {
                 it.remove();
             }
         }
@@ -408,6 +410,31 @@ public class main {
             if(music.gettrackName().toLowerCase().contains(title.toLowerCase())) {
                 music.afficher();
                 return;
+            }
+        }
+        System.out.println("Aucun résultat trouvé pour le titre : " + title);
+    }
+
+    public static void rechercheDichotomique(String title) {
+        triJava(1); // Trier avant la  dichotomie
+
+        // TIMER
+        int left = 0;
+        int right = musicList.size() - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            Musique midMusic = musicList.get(mid);
+            int comparison = midMusic.gettrackName().compareToIgnoreCase(title);
+
+            if (comparison == 0) {
+                midMusic.afficher();
+                System.out.println("");
+                return;
+            } else if (comparison < 0) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
             }
         }
         System.out.println("Aucun résultat trouvé pour le titre : " + title);

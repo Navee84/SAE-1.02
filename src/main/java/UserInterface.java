@@ -70,7 +70,7 @@ public class UserInterface {
 				System.out.println("RECHERCHE\n________________________");
 				System.out.println("Entrez un titre à chercher :");
 				System.out.println("");
-				System.out.println("0 - Menu principal");
+                System.out.println("Titre : ");
                 break;
 
             case "searchSubMenu":
