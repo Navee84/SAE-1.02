@@ -19,6 +19,8 @@ public class main {
 //        myWriter.write("Les fichiers java sont trouvés ici par défaut !");
 //        myWriter.close();
 
+        long start,stop;  //sert pour calculer le temps des tris
+
 
         int input;
         boolean mainLoop = true;
@@ -26,6 +28,7 @@ public class main {
         int attributeCriteria = 1; // Valeur par défaut du critère d'attribut
         int triType = 1; // Valeur par défaut du type de tri
         int searchType = 1; // Valeur par défaut du type de recherche
+        int filterType = 1; // Valeur par défaut du type de filtre
 
 
         System.out.println("TEST");
@@ -35,6 +38,8 @@ public class main {
         while(mainLoop) {
             UserInterface.clearScreen();
             UserInterface.afficher("main");
+            System.out.println("Dernier temps d'exécution : "+(execTime.lastExecTime)/1000000 +" ms");
+            execTime.lastExecTime = -1;
             input = UserInput.input();
 
             switch (input) {
@@ -140,9 +145,32 @@ public class main {
                 // BOUCLE DE FILTRE
                 case 3:
                     UserInterface.clearScreen();
-                    UserInterface.afficher("filtre");
-                    System.out.println("Attribut de filtre actif : "+attributeCriteria);
+                    UserInterface.afficher("filtreSubMenu");
+                    System.out.println("Type de filtre actif : "+filterType);
                     input = UserInput.input();
+
+                    switch(input) {
+                        case 1:
+                            // Filtre manuel
+                            UserInterface.clearScreen();
+                            System.out.println("Entrez la valeur de l'année : ");
+                            String valueManual = UserInput.StringInput();
+                            filtreManuel(valueManual);
+                            break;
+                        case 2:
+                            // Filtre java
+                            UserInterface.clearScreen();
+                            UserInterface.afficher("filtre");
+                            attributeCriteria = UserInput.input();
+                            System.out.println("Entrez la valeur de filtre : ");
+                            String value = UserInput.StringInput();
+                            filtre(attributeCriteria, value);
+                            break;
+
+                        default:
+                            System.out.println("Entrée invalide, veuillez réessayer.");
+                            break;
+                    }
 
                     attributeCriteria = UserInput.attributeCriteria(attributeCriteria, input);
                     break;
@@ -187,6 +215,9 @@ public class main {
                         path = UserInput.StringInput();
                     }
                     break;
+                case 6 :
+                    supression();
+                    break;
 
                 // fin du programme
                 case 0:
@@ -198,7 +229,9 @@ public class main {
         }
 
 	}
+
     public static boolean contructData(String path) {
+        musicList.clear();
         try {
             BufferedReader dataFile = fileLoader.loadFile(path);
             dataFile.readLine(); //passer la première ligne du fichier
@@ -219,15 +252,14 @@ public class main {
 
     }
     public static void supression() {
-        // TIMER
-        Iterator it = musicList.iterator();
-        while (it.hasNext()) {
-                it.remove();
+        execTime.startProfiling();
+        while (musicList.size() > 0)  {
+                musicList.remove(0);
         }
-
+        execTime.stopProfiling();
     }
     public static void filtreManuel(String value) {
-        // TIMER
+        execTime.startProfiling();
         Iterator it = musicList.iterator();
         while (it.hasNext()) {
             Musique music = (Musique) it.next();
@@ -237,13 +269,14 @@ public class main {
                 it.remove();
             }
         }
+        execTime.stopProfiling();
 
     }
     public static void filtre(int criteria, String value) {
-        // TIMER
+        execTime.startProfiling();
         switch (criteria) {
             case 1:
-                musicList.removeIf(f -> !f.gettrackName().contains(value));
+                musicList.removeIf(f -> !f.gettrackName().toLowerCase().contains(value.toLowerCase()));
                 break;
             case 2:
                 musicList.removeIf(f -> !f.getartist(0).contains(value));
@@ -262,10 +295,11 @@ public class main {
                 break;
 
         }
+        execTime.stopProfiling();
     }
 
     public static void triSelection(List<Musique> musicList) {
-        // TIMER
+        execTime.startProfiling();
         int i, j;
         int minIndex;
         for (i = 0; i < musicList.size() - 1; i++) {
@@ -287,10 +321,11 @@ public class main {
                 System.out.println("Tri en cours... (" + i + ")/" + musicList.size());
             }
         }
+        execTime.stopProfiling();
     }
 
     public static void triFusion(List<Musique> list) {
-        // TIMER
+        execTime.startProfiling();
         if (list.size() <= 1) {
             return;
         }
@@ -305,6 +340,7 @@ public class main {
 
         triFusionFusionner(list, gauche, droite);
 
+        execTime.stopProfiling();
     }
 
     public static void triFusionFusionner(List<Musique> resultat, List<Musique> gauche, List<Musique> droite) {
@@ -374,7 +410,7 @@ public class main {
     }
 
     public static void triJava(int criteria) {
-        // TIMER
+        execTime.startProfiling();
         Comparator<Musique> comparator;
 
         switch (criteria) {
@@ -399,26 +435,29 @@ public class main {
             default:
                 throw new IllegalArgumentException("Critère de tri inconnu : " + criteria);
         }
+        execTime.stopProfiling();
     }
 
     public static void rechercheLineaire(String title) {
-        // TIMER
+        execTime.startProfiling();
         Iterator it = musicList.iterator();
 
         while(it.hasNext()) {
             Musique music = (Musique) it.next();
             if(music.gettrackName().toLowerCase().contains(title.toLowerCase())) {
                 music.afficher();
+                execTime.stopProfiling();
                 return;
             }
         }
+        execTime.stopProfiling();
         System.out.println("Aucun résultat trouvé pour le titre : " + title);
     }
 
     public static void rechercheDichotomique(String title) {
         triJava(1); // Trier avant la  dichotomie
 
-        // TIMER
+        execTime.startProfiling();
         int left = 0;
         int right = musicList.size() - 1;
 
@@ -429,6 +468,7 @@ public class main {
 
             if (comparison == 0) {
                 midMusic.afficher();
+                execTime.stopProfiling();
                 System.out.println("");
                 return;
             } else if (comparison < 0) {

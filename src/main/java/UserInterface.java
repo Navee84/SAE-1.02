@@ -23,6 +23,7 @@ public class UserInterface {
                     System.out.println("3 - Filtrer les musiques");
                     System.out.println("4 - Rechercher une musique");
                     System.out.println("5 - Charger un fichier de musiques");
+                    System.out.println("6 - Vider la liste");
 				System.out.println("");
 				System.out.println("0 - Quitter l'application");
 				break;
@@ -36,7 +37,7 @@ public class UserInterface {
                 System.out.println("TRI DES MUSIQUES - SOUS MENU\n________________________");
                 System.out.print("1 - Changer le critère de tri ");
                 System.out.println("(Ne fonctionne qu'avec le tri Java)");
-                System.out.println("2 - Changer le type de tri");
+                System.out.println("2 - Exécuter un tri");
                 System.out.println("");
                 System.out.println("0 - Menu principal");
                 break;
@@ -58,12 +59,18 @@ public class UserInterface {
                 System.out.println("");
                 break;
 
+            case "filtreSubMenu":
+                System.out.println("FILTRE DES MUSIQUES - SOUS MENU\n________________________");
+                System.out.println("1 - Filtre manuel");
+                System.out.println("2 - Filtre java");
+                System.out.println("");
+                break;
+
 			case "filtre":
 				System.out.println("FILTRER LES MUSIQUES\n________________________");
 				System.out.println("Choisissez un critère de filtre :\n");
                 displayAttributes();
 				System.out.println("");
-				System.out.println("0 - Menu principal");
                 break;
 
 			case "recherche":
