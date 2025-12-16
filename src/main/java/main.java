@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.io.*;
 import java.util.*;
 
@@ -43,12 +42,44 @@ public class main {
                 case 1:
                     UserInterface.clearScreen();
                     UserInterface.afficher("affichage");
+                    System.out.printf("%-100s", "Titre");
+                    System.out.print("  |  ");
+
+                    System.out.printf("%4s", "Durée");
+                    System.out.print("  |  ");
+
+                    System.out.printf("  %-8s", "Date de sortie");
+                    System.out.print("  |  ");
+
+                    System.out.printf("  %-60s", "Nom de l'album");
+                    System.out.print("  |  ");
+                    System.out.printf("  %-30s", "Type de l'album");
+                    System.out.print("  |  ");
+
+                    System.out.printf("  %3s  |  ", "Popularité de l'album");
+                    System.out.print("  |  ");
+                    for(int i = 0; i<12; i++){
+                        System.out.print("Artiste "+i);
+                        System.out.print("  |  ");
+                    }
 
                     // Afficher tous les éléments présents dans la liste
                     Iterator<Musique> iterator = musicList.iterator();
-                    while(iterator.hasNext()) {
-                        iterator.next().afficher();
-                        System.out.println("");
+                    int i = 1;
+                    if(musicList.size()>=10000) {
+                        if(i%10000==0) {
+                            System.out.print(i + " - ");
+                            iterator.next().afficher();
+                            System.out.println("");
+                        }
+                        i++;
+                    } else {
+                        while(iterator.hasNext()) {
+                            System.out.print(i + " - ");
+                            iterator.next().afficher();
+                            System.out.println("");
+                            i++;
+                        }
                     }
                     // attendre un input de l'utilisateur pour revenir au menu principal
                     input = UserInput.input();
@@ -84,6 +115,20 @@ public class main {
                         default:
                             System.out.println("Entrée invalide, veuillez réessayer.");
                             break;
+                    }
+                    // TRI DES MUSIQUES SELON LES PARAMÈTRES CHOISIS
+                    switch (triType) {
+                        case 1:
+                            // Tri sélection
+                            triSelection(musicList);
+                            break;
+                        case 2:
+                            // Tri fusion
+                            triFusion(musicList);
+                            break;
+                        case 3:
+                            // Tri Java
+                            triJava(attributeCriteria);
                     }
 
                     break;
@@ -130,7 +175,7 @@ public class main {
         }
 
 	}
-    public static boolean contructData(String path) throws IOException {
+    public static boolean contructData(String path) {
         try {
             BufferedReader dataFile = fileLoader.loadFile(path);
             dataFile.readLine(); //passer la première ligne du fichier
@@ -151,25 +196,142 @@ public class main {
 
     }
 
-//    public void triSelection(Object criteria) {
-//        Iterator<Musique> it1 = musicList.listIterator();
-//
-//        while (it1.hasNext()) {
-//            int posMin = it1.hasNext().;
-//            String[] min = it1.next();
-//            ListIterator<String[]> it2 = table.listIterator(it1.nextIndex());
-//
-//            while (it2.hasNext()) {
-//                String[] courant = it2.next();
-//                int popCourant = Integer.parseInt(courant[col_popularite]);
-//                int popMin = Integer.parseInt(min[col_popularite]);
-//                if (popCourant < popMin) {
-//                    min = courant;
-//                    posMin = it2.previousIndex();}}
-//            int posActuelle = it1.previousIndex();
-//            if (posMin != posActuelle) {
-//                String[] tmp = table.get(posActuelle);
-//                table.set(posActuelle, min);
-//                table.set(posMin, tmp);}}}
+    public static void triSelection(List<Musique> musicList) {
+        int i, j;
+        int minIndex;
+        for (i = 0; i < musicList.size() - 1; i++) {
+            minIndex = i;
+            //recherche minimum
+            for (j = i + 1; j < musicList.size(); j++) {
+                if (musicList.get(j).getalbumPopularity() < musicList.get(minIndex).getalbumPopularity()) {
+                    minIndex = j;
+                }
+            }
+            //echange
+            if (minIndex != i) {
+                Musique temp = musicList.get(i);
+                musicList.set(i, musicList.get(minIndex));
+                musicList.set(minIndex, temp);
+            }
 
+            if(i%10000==0) {
+                System.out.println("Tri en cours... (" + i + ")/" + musicList.size());
+            }
+        }
+    }
+
+    public static void triFusion(List<Musique> list) {
+        if (list.size() <= 1) {
+            return;
+        }
+
+        int milieu = list.size() / 2;
+
+        List<Musique> gauche = new ArrayList<>(list.subList(0, milieu));
+        List<Musique> droite = new ArrayList<>(list.subList(milieu, list.size()));
+
+        triFusion(gauche);
+        triFusion(droite);
+
+        triFusionFusionner(list, gauche, droite);
+
+    }
+
+    public static void triFusionFusionner(List<Musique> resultat, List<Musique> gauche, List<Musique> droite) {
+            Iterator<Musique> itG = gauche.iterator();
+            Iterator<Musique> itD = droite.iterator();
+            ListIterator<Musique> itR = resultat.listIterator();
+
+            Musique mG = null;
+            Musique mD = null;
+
+            if (itG.hasNext()) {
+                mG = itG.next();
+            }
+
+            if (itD.hasNext()) {
+                mD = itD.next();
+            }
+
+            while (mG != null && mD != null) {
+
+                // comparaison
+                if (mG.getalbumPopularity() <= mD.getalbumPopularity()) {
+                    itR.next();
+                    itR.set(mG);
+
+                    if (itG.hasNext()) {
+                        mG = itG.next();
+                    } else {
+                        mG = null;
+                    }
+
+                } else {
+                    itR.next();
+                    itR.set(mD);
+
+                    if (itD.hasNext()) {
+                        mD = itD.next();
+                    } else {
+                        mD = null;
+                    }
+                }
+            }
+
+            // reste de la liste gauche
+            while (mG != null) {
+                itR.next();
+                itR.set(mG);
+
+                if (itG.hasNext()) {
+                    mG = itG.next();
+                } else {
+                    mG = null;
+                }
+            }
+
+            // reste de la liste droite
+            while (mD != null) {
+                itR.next();
+                itR.set(mD);
+
+                if (itD.hasNext()) {
+                    mD = itD.next();
+                } else {
+                    mD = null;
+                }
+            }
+    }
+
+    public static void triJava(int criteria) {
+        Comparator<Musique> comparator;
+
+        switch (criteria) {
+            case 1:
+                musicList.sort(Musique.compareTrackName);
+                break;
+            case 2:
+                musicList.sort(Musique.compareAlbumName);
+                break;
+            case 3:
+                musicList.sort(Musique.compareArtistName);
+                break;
+            case 4:
+                musicList.sort(Musique.compareReleaseDate);
+                break;
+            case 5:
+                musicList.sort(Musique.compareAlbumPopularity);
+                break;
+            case 6:
+                musicList.sort(Musique.compareDuration);
+                break;
+            default:
+                throw new IllegalArgumentException("Critère de tri inconnu : " + criteria);
+        }
+    }
+
+    public static void rechercheLineaire(String title) {
+        // À implémenter
+        // Affiche directement le titre unique (utiliser musique.afficher())
+    }
 }

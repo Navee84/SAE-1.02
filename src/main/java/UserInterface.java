@@ -6,6 +6,7 @@ public class UserInterface {
          * Arguments : String, valeurs possibles
          * — main
          * — affichage
+         * — triSubMenu
          * — tri
          * — filtre
          * — recherche
@@ -30,7 +31,8 @@ public class UserInterface {
 
             case "triSubMenu":
                 System.out.println("TRI DES MUSIQUES - SOUS MENU\n________________________");
-                System.out.println("1 - Changer le critère de tri");
+                System.out.print("1 - Changer le critère de tri ");
+                System.out.println("(Ne fonctionne qu'avec le tri Java)");
                 System.out.println("2 - Changer le type de tri");
                 System.out.println("");
                 System.out.println("0 - Menu principal");
