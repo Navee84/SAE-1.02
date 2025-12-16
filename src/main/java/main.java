@@ -25,6 +25,7 @@ public class main {
         boolean triLoop;
         int attributeCriteria = 1; // Valeur par défaut du critère d'attribut
         int triType = 1; // Valeur par défaut du type de tri
+        int searchType = 1; // Valeur par défaut du type de recherche
 
 
         System.out.println("TEST");
@@ -67,12 +68,16 @@ public class main {
                     Iterator<Musique> iterator = musicList.iterator();
                     int i = 1;
                     if(musicList.size()>=10000) {
-                        if(i%10000==0) {
-                            System.out.print(i + " - ");
-                            iterator.next().afficher();
-                            System.out.println("");
+                        while (iterator.hasNext()) {
+                            if(i%1000==0) {
+                                System.out.print(i + " - ");
+                                iterator.next().afficher();
+                                System.out.println("");
+                            } else {
+                                iterator.next();
+                            }
+                            i++;
                         }
-                        i++;
                     } else {
                         while(iterator.hasNext()) {
                             System.out.print(i + " - ");
@@ -140,18 +145,36 @@ public class main {
                     input = UserInput.input();
 
                     attributeCriteria = UserInput.attributeCriteria(attributeCriteria, input);
-
-                    // Retour au menu principal
-                    if(input == 0) {
-                        triLoop = false;
-                    }
                     break;
 
                 // RECHERCHE DE MUSIQUE
                 case 4:
+                    String title;
+                    UserInterface.clearScreen();
+                    UserInterface.afficher("seachSubMenu");
+                    System.out.println("type de recherche active : " + searchType);
+                    searchType = UserInput.input();
+
                     UserInterface.clearScreen();
                     UserInterface.afficher("recherche");
+                    title = UserInput.StringInput();
+
+
+                    switch (searchType) {
+                        case 1:
+                            rechercheLineaire(title);
+                            break;
+                        case 2:
+                            // A implementer : recherche dicho (tkt je fais)
+                            break;
+
+                        default:
+                            System.out.println("Entrée invalide, veuillez réessayer.");
+                            break;
+
+                    }
                     UserInput.StringInput();
+
                     break;
 
                 // CHARGEMENT DU FICHIER
@@ -195,8 +218,52 @@ public class main {
         return true;
 
     }
+    public static void supression() {
+        // TIMER
+        Iterator it = musicList.iterator();
+        while (it.hasNext()) {
+                it.remove();
+        }
+
+    }
+    public static void filtreManuel(String value) {
+        // TIMER - Pas finit tkt
+        Iterator it = musicList.iterator();
+        while (it.hasNext()) {
+            Musique music = (Musique) it.next();
+            if(!music.getreleaseDate().contains(value)) {
+                it.remove();
+            }
+        }
+
+    }
+    public static void filtre(int criteria, String value) {
+        // TIMER
+        switch (criteria) {
+            case 1:
+                musicList.removeIf(f -> !f.gettrackName().contains(value));
+                break;
+            case 2:
+                musicList.removeIf(f -> !f.getartist(0).contains(value));
+                break;
+            case 3:
+                musicList.removeIf(f -> !f.getalbumName().contains(value));
+                break;
+            case 4:
+                musicList.removeIf(f -> !f.getreleaseDate().equals(value));
+                break;
+            case 5:
+                musicList.removeIf(f -> !(f.getduration() == Integer.parseInt(value)));
+                break;
+            case 6:
+                musicList.removeIf(f -> !(f.getalbumPopularity() == Integer.parseInt(value)));
+                break;
+
+        }
+    }
 
     public static void triSelection(List<Musique> musicList) {
+        // TIMER
         int i, j;
         int minIndex;
         for (i = 0; i < musicList.size() - 1; i++) {
@@ -221,6 +288,7 @@ public class main {
     }
 
     public static void triFusion(List<Musique> list) {
+        // TIMER
         if (list.size() <= 1) {
             return;
         }
@@ -304,6 +372,7 @@ public class main {
     }
 
     public static void triJava(int criteria) {
+        // TIMER
         Comparator<Musique> comparator;
 
         switch (criteria) {
@@ -331,7 +400,16 @@ public class main {
     }
 
     public static void rechercheLineaire(String title) {
-        // À implémenter
-        // Affiche directement le titre unique (utiliser musique.afficher())
+        // TIMER
+        Iterator it = musicList.iterator();
+
+        while(it.hasNext()) {
+            Musique music = (Musique) it.next();
+            if(music.gettrackName().toLowerCase().contains(title.toLowerCase())) {
+                music.afficher();
+                return;
+            }
+        }
+        System.out.println("Aucun résultat trouvé pour le titre : " + title);
     }
 }

@@ -1,6 +1,9 @@
 public class UserInterface {
 	
 	public static void afficher(String menu) {
+        // Les conventions de critères de sélections sont définis dans cette fonction
+        // Lors de l'utilisation de variables de critères, se référer au case correspondant
+
         /*
          * Permet l'affichage d'un panneau spécifique.
          * Arguments : String, valeurs possibles
@@ -68,6 +71,13 @@ public class UserInterface {
 				System.out.println("Entrez un titre à chercher :");
 				System.out.println("");
 				System.out.println("0 - Menu principal");
+                break;
+
+            case "searchSubMenu":
+                System.out.println("TYPE DE RECHERCHE\n________________________");
+                System.out.println("1 - Recherche naïve");
+                System.out.println("2 - Recherche dichotomique (triera la liste automatiquement)");
+                System.out.println("");
                 break;
 
 			case "chargement":
